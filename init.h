@@ -20,8 +20,6 @@
 */
 void ports_init(void);
 
-
-
 /*
 *Function: all_init
 *
@@ -32,4 +30,3 @@ void ports_init(void);
 void all_init(void);
 
 #endif /* INIT_H_ */
-

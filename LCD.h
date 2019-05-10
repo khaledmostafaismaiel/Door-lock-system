@@ -4,7 +4,6 @@
 #include "LCD_CONF.h"
 #include "helper.h"
 
-
 #define NEXT_LINE 0XC0
 #define FIRST_LINE 0X80
 

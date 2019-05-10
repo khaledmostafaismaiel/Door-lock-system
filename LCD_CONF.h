@@ -12,7 +12,6 @@
 #include "GPIO_CONF.h"
 #include "helper.h"
 
-
 /*Define groups*/
 #define LCD0 0
 

@@ -6,7 +6,6 @@
 #include "GPIO_CONF.h"
 #include "helper.h"
 
-
 /*number of ports*/
 #define PORT_NUMBER 4
 

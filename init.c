@@ -29,4 +29,3 @@ void all_init(void)
 	LCD_INIT();
 	adc_init();
 }
-

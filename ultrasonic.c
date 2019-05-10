@@ -9,14 +9,13 @@
 
 #include "ultrasonic.h"
 
-
 void ultra_scan(void)
 {
 
-  DDRD |=  (1 << TRIGER_PIN);
-  PORTD |=  (1 << TRIGER_PIN);
+  DDRD |= (1 << TRIGER_PIN);
+  PORTD |= (1 << TRIGER_PIN);
   _delay_ms(15);
-  PORTD &= ~ (1 << TRIGER_PIN);
+  PORTD &= ~(1 << TRIGER_PIN);
   distance_from_object = ((pulse / F_CPU_RATIO) / ULTRASONIC_DISANCE_CONST);
   return;
 }

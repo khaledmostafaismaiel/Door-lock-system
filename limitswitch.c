@@ -11,9 +11,9 @@
 void open_limit_switch_checker(void)
 {
 
-	PORTB |=  (1 << OPEN_LIMIT_SWITCH_PIN);
+	PORTB |= (1 << OPEN_LIMIT_SWITCH_PIN);
 
-	if ((PINB &  (1 << OPEN_LIMIT_SWITCH_PIN)) == 0)
+	if ((PINB & (1 << OPEN_LIMIT_SWITCH_PIN)) == 0)
 	{
 		++doorOpencounter;
 	}
@@ -31,9 +31,9 @@ void open_limit_switch_checker(void)
 void close_limit_switch_checker(void)
 {
 
-	PORTB |=  (1 << CLOSE_LIMIT_SWITCH_PIN);
+	PORTB |= (1 << CLOSE_LIMIT_SWITCH_PIN);
 
-	if ((PINB &  (1 << CLOSE_LIMIT_SWITCH_PIN)) == 0)
+	if ((PINB & (1 << CLOSE_LIMIT_SWITCH_PIN)) == 0)
 	{
 		++doorclosecounter;
 	}

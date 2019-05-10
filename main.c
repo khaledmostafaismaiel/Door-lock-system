@@ -25,22 +25,16 @@
 #include "motor.h"
 #include "limitswitch.h"
 
-
 int main(void)
 {
-	
 
-all_init();
+	all_init();
 
 	while (1)
 	{
 
 		run();
- 
- 
- 
- 
 	}
 
-return 0;
+	return 0;
 }

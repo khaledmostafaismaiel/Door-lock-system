@@ -21,9 +21,6 @@ uint8_t door_is_open;
 
 extern uint8_t correct_passkey[6];
 
-
-
-
 /*
 *Function: close_door
 *
@@ -32,10 +29,6 @@ extern uint8_t correct_passkey[6];
 *return void
 */
 void close_door(void);
-
-
-
-
 
 /*
 *Function: open_door
@@ -46,8 +39,6 @@ void close_door(void);
 */
 void open_door(void);
 
-
-
 /*
 *Function: stop_opening
 *
@@ -57,8 +48,6 @@ void open_door(void);
 */
 void stop_opening(void);
 
-
-
 /*
 *Function: stop_closing
 *
@@ -67,6 +56,5 @@ void stop_opening(void);
 *return void
 */
 void stop_closing(void);
-
 
 #endif /* MOTOR_H_ */

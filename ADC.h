@@ -13,8 +13,6 @@
 #include "pwm.h"
 #include "helper.h"
 
-
-
 /*
 *Function: adc_init
 *
@@ -24,7 +22,6 @@
 */
 void adc_init(void);
 
-
 /*
 *Function: start_conversion
 *
@@ -33,7 +30,6 @@ void adc_init(void);
 *return void
 */
 void start_conversion(void);
-
 
 /*
 *Function: adc_read

@@ -17,9 +17,9 @@ void close_door(void)
 			 PD7 low
 	*/
 
-	DDRB |=  (1 << SECOND_MOTOR_PIN);
-	PORTB |=  (1 << SECOND_MOTOR_PIN);
-	PORTD &= ~ (1 << FIRST_MOTOR_PIN);
+	DDRB |= (1 << SECOND_MOTOR_PIN);
+	PORTB |= (1 << SECOND_MOTOR_PIN);
+	PORTD &= ~(1 << FIRST_MOTOR_PIN);
 	door_is_close = 0;
 }
 
@@ -29,9 +29,9 @@ void open_door(void)
 	motor -> PD7 hieght
 			 PB7 low
 	*/
-	DDRD |=  (1 << FIRST_MOTOR_PIN);
-	PORTD |=  (1 << FIRST_MOTOR_PIN);
-	PORTB &= ~ (1 << SECOND_MOTOR_PIN);
+	DDRD |= (1 << FIRST_MOTOR_PIN);
+	PORTD |= (1 << FIRST_MOTOR_PIN);
+	PORTB &= ~(1 << SECOND_MOTOR_PIN);
 	door_is_open = 0;
 }
 
@@ -41,8 +41,8 @@ void stop_opening(void)
 	motor -> PD7 hieght
 			 PB7 low
 	*/
-	DDRD |=  (1 << FIRST_MOTOR_PIN);
-	PORTD &= ~ (1 << FIRST_MOTOR_PIN);
+	DDRD |= (1 << FIRST_MOTOR_PIN);
+	PORTD &= ~(1 << FIRST_MOTOR_PIN);
 	door_is_open = 1;
 }
 
@@ -53,7 +53,7 @@ void stop_closing(void)
 			 PD7 low
 	*/
 
-	DDRB |=  (1 << SECOND_MOTOR_PIN);
-	PORTB &= ~ (1 << SECOND_MOTOR_PIN);
+	DDRB |= (1 << SECOND_MOTOR_PIN);
+	PORTB &= ~(1 << SECOND_MOTOR_PIN);
 	door_is_close = 1;
 }

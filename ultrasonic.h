@@ -15,17 +15,14 @@
 #include <string.h>
 #include "helper.h"
 
-#define  F_CPU_RATIO 8
+#define F_CPU_RATIO 8
 #define ULTRASONIC_DISANCE_CONST 58
-#define  TRIGER_PIN 3
-
+#define TRIGER_PIN 3
 
 float distance_from_object;
 
 int status;
 int pulse;
-
-
 
 /*
 *Function: ultra_scan

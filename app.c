@@ -5,10 +5,8 @@
  *  Author: Khaled's Lap
  */
 
-
 #define F_CPU 8000000UL
 #include "app.h"
-
 
 void run(void)
 {
@@ -26,7 +24,7 @@ void run(void)
 
 	while (door_is_close == 0)
 	{
-		_delay_ms(10);		
+		_delay_ms(10);
 		if (limit_switch_flag == 1)
 		{
 			close_limit_switch_checker();
@@ -41,103 +39,96 @@ void run(void)
 	LCD_Clear(LCD0);
 #endif
 
+	distance_from_object = 0;
 
-distance_from_object = 0 ;
+	uint8_t i = 0;
 
-uint8_t i = 0 ;
+	set_int0_init();
+	while (i < SAMPLING_NUMBER)
+	{
 
-set_int0_init();
-while (i < SAMPLING_NUMBER){
+		_delay_ms(10);
 
-_delay_ms(10);		
+		if (ultra_flag == 1)
+		{
+			ultra_flag = 0;
+			ultra_scan();
 
-if (ultra_flag == 1)
-{
-	ultra_flag = 0;
-	ultra_scan();
+			if ((distance_from_object > 0) && (distance_from_object <= DETECTION_DISTANCE))
+			{
+				++i;
+			}
+			else
+			{
+				i = 0;
+			}
+		}
 
-if ((distance_from_object > 0) && (distance_from_object <= DETECTION_DISTANCE))
-{
-	++i;
-}else{
-	i=0 ;
-}
-
-
-}
-		
 #if DEBUGE == 1
-itoa(distance_from_object, buffer, 10);
-LCD_Write_String(LCD0, buffer);
-_delay_ms(100);
-LCD_Clear(LCD0);
-#endif		
-		
-		
-}
+		itoa(distance_from_object, buffer, 10);
+		LCD_Write_String(LCD0, buffer);
+		_delay_ms(100);
+		LCD_Clear(LCD0);
+#endif
+	}
 
-reset_int0_init();
+	reset_int0_init();
 
-reset_ultra_timer1();
+	reset_ultra_timer1();
 
-passkey_loading();
+	passkey_loading();
 
-load_number_of_triles();
+	load_number_of_triles();
 
-MainMassage();
+	MainMassage();
 
-counter = 0 ;
-current = 0 ;
-punish = 1	;
-coreect_pass_key = 0 ;	
-mission_done = 0 ;
+	counter = 0;
+	current = 0;
+	punish = 1;
+	coreect_pass_key = 0;
+	mission_done = 0;
 
-while (coreect_pass_key == 0){
-	
+	while (coreect_pass_key == 0)
+	{
+
 #if DEBUGE == 1
-		DDRD |=  (1 << TEST_LED_PIN) ;
-		PORTD ^=  (1 << TEST_LED_PIN);
-		_delay_ms(100);		
+		DDRD |= (1 << TEST_LED_PIN);
+		PORTD ^= (1 << TEST_LED_PIN);
+		_delay_ms(100);
 #endif
 
-if (punish == 1)
-{
-do_punish();
-}
+		if (punish == 1)
+		{
+			do_punish();
+		}
 
+		if ((is_hash == 1) && (is_long_pressed == 1) && (current == 0))
+		{
 
-if ( (is_hash == 1) && (is_long_pressed == 1) && (current == 0) )
-{
-			
-old_passkey_scanning();
-reset_payload();
-new_passkey_scanning();
-reset_payload();
+			old_passkey_scanning();
+			reset_payload();
+			new_passkey_scanning();
+			reset_payload();
 
-mission_done = 1 ;
-				
-}
+			mission_done = 1;
+		}
 
-_delay_ms(10);
+		_delay_ms(10);
 
-if (mission_done == 0)
-{
+		if (mission_done == 0)
+		{
 
-		passkey_scanning();
-	
-}
-
-
-
-}
-mission_done = 0 ;
-reset_number_of_triles();
-LCD_Clear(LCD0);	
-open_door();
+			passkey_scanning();
+		}
+	}
+	mission_done = 0;
+	reset_number_of_triles();
+	LCD_Clear(LCD0);
+	open_door();
 
 #if DEBUGE == 1
-LCD_Write_String(LCD0, "OPEN DOOR.");
-_delay_ms(2000);
+	LCD_Write_String(LCD0, "OPEN DOOR.");
+	_delay_ms(2000);
 #endif
 
 	set_pwm_timer2_init();
@@ -151,7 +142,7 @@ _delay_ms(2000);
 
 		if (potentiometer_flag == 1)
 		{
-			pwm_duty(adc_read());		
+			pwm_duty(adc_read());
 		}
 		if (keypad_flag == 1)
 		{
@@ -159,239 +150,95 @@ _delay_ms(2000);
 			new_pressed = get_pressed_key();
 			if (new_pressed != NOT_PRESSED_LETTER)
 			{
-			LCD_Clear(LCD0);
-			LCD_Write_String(LCD0,"DOOR MUST OPEN FIRST.");
-			_delay_ms(500);
-			LCD_Clear(LCD0);
-
+				LCD_Clear(LCD0);
+				LCD_Write_String(LCD0, "DOOR MUST OPEN FIRST.");
+				_delay_ms(500);
+				LCD_Clear(LCD0);
 			}
-
-
 		}
 	}
-reset_pwm_timer2_init();
-
-
-#if DEBUGE == 1
-LCD_Clear(LCD0);
-LCD_Write_String(LCD0, "DOOR IS OPENED.");
-_delay_ms(2000);
-LCD_Clear(LCD0);
-#endif
-coreect_pass_key = 0 ;
-
-timer0_init();
-while(timer1_wait_for < wait_for_10sec_timer0){
-
-_delay_ms(10);
-	if (keypad_flag == 1)  //i can add scanning for the keypad because if the user want to change the passkey in this time
-	{
-		keypad_flag = 0; 
-	}
-}
-
-
-close_door();
+	reset_pwm_timer2_init();
 
 #if DEBUGE == 1
-LCD_Clear(LCD0);
-LCD_Write_String(LCD0, "CLOSE DOOR.");
-_delay_ms(2000);
-#endif
-
-while (door_is_close != 1)
-{
-
-_delay_ms(10);
-
-	if (limit_switch_flag == 1)
-	{
-		limit_switch_flag = 0;
-		close_limit_switch_checker();
-	}
-		
-
-}
-
-
 	LCD_Clear(LCD0);
-	LCD_Write_String(LCD0,"GOODBYE.");
+	LCD_Write_String(LCD0, "DOOR IS OPENED.");
 	_delay_ms(2000);
 	LCD_Clear(LCD0);
+#endif
+	coreect_pass_key = 0;
 
+	timer0_init();
+	while (timer1_wait_for < wait_for_10sec_timer0)
+	{
 
-
-
-
-}
-
-
-
-void new_passkey_scanning(void){
-		
-		LCD_Clear(LCD0);
-		LCD_Write_String(LCD0, "CHOOSE NEW PASSKEY.");
-		_delay_ms(3000);
-		LCD_Clear(LCD0);
-			
-		while (set_new_passkey == 0)
+		_delay_ms(10);
+		if (keypad_flag == 1) //i can add scanning for the keypad because if the user want to change the passkey in this time
 		{
-
-			#if DEBUGE == 1
-			DDRD |=  (1 << TEST_LED_PIN);
-			PORTD ^=  (1 << TEST_LED_PIN);
-			#endif
-
-			_delay_ms(10);
-
-			if (keypad_flag == 1)
-			{
-				keypad_flag = 0;
-				new_pressed = get_pressed_key();
-				if (new_pressed != NOT_PRESSED_LETTER)
-				{
-
-					switch (new_pressed)
-					{
-						case '#':
-						if (counter == PASSKEY_LENGTH)
-						{
-							enter = 1;
-						}
-						break;
-
-						default:
-						if (new_pressed != '*')
-						{
-							payload[current] = new_pressed;
-							++current;
-						}
-						else
-						{
-							if (current > 0)
-							{
-								--current;		
-							}
-						}
-						lcd_format_display(new_pressed);
-						break;
-					}
-				}
-
-				if ((enter == 1) && (counter == PASSKEY_LENGTH))
-				{
-					set_new_passkey = 1 ;
-					update_passkey(payload);
-				}
-				else
-				{
-					enter = 0;
-				}
-			}
-		}	
-		
-		set_new_passkey = 0 ;
-	
-}
-
-
-void old_passkey_scanning(void){
-	
-			LCD_Clear(LCD0);
-			LCD_Write_String(LCD0, "ENTER THE OLD PASSKEY.");
-			_delay_ms(2000);
-			LCD_Clear(LCD0);
-while (coreect_pass_key == 0){
-
-if (punish == 1)
-{
-	do_punish();
-}
-
-_delay_ms(10);
-
-	if (keypad_flag == 1)
-	{
-		keypad_flag = 0;
-				new_pressed = get_pressed_key();
-				if (new_pressed != NOT_PRESSED_LETTER)
-				{
-
-					switch (new_pressed)
-					{
-						case '#':
-						if (counter == PASSKEY_LENGTH)
-						{
-							enter = 1;
-						}
-						break;
-
-						default:
-						if (new_pressed != '*')
-						{
-							payload[current] = new_pressed;
-							++current;
-						}
-						else
-						{
-							if (current > 0)
-							{
-								--current;
-							}
-						}
-						lcd_format_display(new_pressed);
-						break;
-					}
-				}
-
-				if ((enter == 1) && (counter == PASSKEY_LENGTH))
-				{
-					if (pass_comparing(payload) == 1)
-					{
-						coreect_pass_key = 1 ;
-						}else{
-						LCD_Clear(LCD0);
-						counter = 0 ;
-						current = 0 ;
-						++number_of_triels;
-						set_number_of_triles();
-						punish = 1 ;
-					}
-					
-					}else{
-					enter = 0;
-				}		
+			keypad_flag = 0;
+		}
 	}
-}
 
-	
-}
+	close_door();
 
+#if DEBUGE == 1
+	LCD_Clear(LCD0);
+	LCD_Write_String(LCD0, "CLOSE DOOR.");
+	_delay_ms(2000);
+#endif
 
-
-
-void passkey_scanning(void){
-
-_delay_ms(10);
-	
-	if (keypad_flag == 1)
+	while (door_is_close != 1)
 	{
-		keypad_flag = 0;
-			
+
+		_delay_ms(10);
+
+		if (limit_switch_flag == 1)
+		{
+			limit_switch_flag = 0;
+			close_limit_switch_checker();
+		}
+	}
+
+	LCD_Clear(LCD0);
+	LCD_Write_String(LCD0, "GOODBYE.");
+	_delay_ms(2000);
+	LCD_Clear(LCD0);
+}
+
+void new_passkey_scanning(void)
+{
+
+	LCD_Clear(LCD0);
+	LCD_Write_String(LCD0, "CHOOSE NEW PASSKEY.");
+	_delay_ms(3000);
+	LCD_Clear(LCD0);
+
+	while (set_new_passkey == 0)
+	{
+
+#if DEBUGE == 1
+		DDRD |= (1 << TEST_LED_PIN);
+		PORTD ^= (1 << TEST_LED_PIN);
+#endif
+
+		_delay_ms(10);
+
+		if (keypad_flag == 1)
+		{
+			keypad_flag = 0;
 			new_pressed = get_pressed_key();
 			if (new_pressed != NOT_PRESSED_LETTER)
 			{
 
 				switch (new_pressed)
 				{
-					case '#':
+				case '#':
 					if (counter == PASSKEY_LENGTH)
 					{
 						enter = 1;
 					}
 					break;
 
-					default:
+				default:
 					if (new_pressed != '*')
 					{
 						payload[current] = new_pressed;
@@ -399,10 +246,76 @@ _delay_ms(10);
 					}
 					else
 					{
-							if (current > 0)
-							{
-								--current;
-							}
+						if (current > 0)
+						{
+							--current;
+						}
+					}
+					lcd_format_display(new_pressed);
+					break;
+				}
+			}
+
+			if ((enter == 1) && (counter == PASSKEY_LENGTH))
+			{
+				set_new_passkey = 1;
+				update_passkey(payload);
+			}
+			else
+			{
+				enter = 0;
+			}
+		}
+	}
+
+	set_new_passkey = 0;
+}
+
+void old_passkey_scanning(void)
+{
+
+	LCD_Clear(LCD0);
+	LCD_Write_String(LCD0, "ENTER THE OLD PASSKEY.");
+	_delay_ms(2000);
+	LCD_Clear(LCD0);
+	while (coreect_pass_key == 0)
+	{
+
+		if (punish == 1)
+		{
+			do_punish();
+		}
+
+		_delay_ms(10);
+
+		if (keypad_flag == 1)
+		{
+			keypad_flag = 0;
+			new_pressed = get_pressed_key();
+			if (new_pressed != NOT_PRESSED_LETTER)
+			{
+
+				switch (new_pressed)
+				{
+				case '#':
+					if (counter == PASSKEY_LENGTH)
+					{
+						enter = 1;
+					}
+					break;
+
+				default:
+					if (new_pressed != '*')
+					{
+						payload[current] = new_pressed;
+						++current;
+					}
+					else
+					{
+						if (current > 0)
+						{
+							--current;
+						}
 					}
 					lcd_format_display(new_pressed);
 					break;
@@ -413,23 +326,87 @@ _delay_ms(10);
 			{
 				if (pass_comparing(payload) == 1)
 				{
-					coreect_pass_key = 1 ;
-					}else{
+					coreect_pass_key = 1;
+				}
+				else
+				{
 					LCD_Clear(LCD0);
-					counter = 0 ;
-					current = 0 ;
+					counter = 0;
+					current = 0;
 					++number_of_triels;
 					set_number_of_triles();
-					punish = 1 ;
+					punish = 1;
 				}
-				
-				}else{
+			}
+			else
+			{
 				enter = 0;
 			}
-		
-	
+		}
 	}
-	
+}
+
+void passkey_scanning(void)
+{
+
+	_delay_ms(10);
+
+	if (keypad_flag == 1)
+	{
+		keypad_flag = 0;
+
+		new_pressed = get_pressed_key();
+		if (new_pressed != NOT_PRESSED_LETTER)
+		{
+
+			switch (new_pressed)
+			{
+			case '#':
+				if (counter == PASSKEY_LENGTH)
+				{
+					enter = 1;
+				}
+				break;
+
+			default:
+				if (new_pressed != '*')
+				{
+					payload[current] = new_pressed;
+					++current;
+				}
+				else
+				{
+					if (current > 0)
+					{
+						--current;
+					}
+				}
+				lcd_format_display(new_pressed);
+				break;
+			}
+		}
+
+		if ((enter == 1) && (counter == PASSKEY_LENGTH))
+		{
+			if (pass_comparing(payload) == 1)
+			{
+				coreect_pass_key = 1;
+			}
+			else
+			{
+				LCD_Clear(LCD0);
+				counter = 0;
+				current = 0;
+				++number_of_triels;
+				set_number_of_triles();
+				punish = 1;
+			}
+		}
+		else
+		{
+			enter = 0;
+		}
+	}
 }
 
 void passkey_loading(void)
@@ -456,8 +433,6 @@ void passkey_loading(void)
 #endif
 }
 
-
-
 int pass_comparing(char string[])
 {
 	int i = 0;
@@ -475,8 +450,6 @@ int pass_comparing(char string[])
 	return 1;
 }
 
-
-
 #if DEBUGE == 1
 
 void lcd_format_display(char letter)
@@ -484,11 +457,11 @@ void lcd_format_display(char letter)
 	switch (letter)
 	{
 	case '*':
-	if (counter > 0)
-	{
-		DeleteChar(LCD0);
-		--counter;
-	}
+		if (counter > 0)
+		{
+			DeleteChar(LCD0);
+			--counter;
+		}
 
 		break;
 
@@ -609,22 +582,21 @@ void lcd_format_display(char letter)
 
 #endif
 
-
 #if DEBUGE == 0
 
 void lcd_format_display(char letter)
 {
 	switch (letter)
 	{
-		case '*':
-	if (counter > 1)
-	{
-		DeleteChar(LCD0);
-		--counter;
-	}
+	case '*':
+		if (counter > 1)
+		{
+			DeleteChar(LCD0);
+			--counter;
+		}
 		break;
 
-		case '1':
+	case '1':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -632,7 +604,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '2':
+	case '2':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -640,7 +612,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '3':
+	case '3':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -649,7 +621,7 @@ void lcd_format_display(char letter)
 
 		break;
 
-		case 'A':
+	case 'A':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -657,7 +629,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '4':
+	case '4':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -665,7 +637,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '5':
+	case '5':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -673,7 +645,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '6':
+	case '6':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -681,7 +653,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case 'B':
+	case 'B':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -689,7 +661,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '7':
+	case '7':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -697,7 +669,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '8':
+	case '8':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -705,7 +677,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '9':
+	case '9':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -713,7 +685,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case 'C':
+	case 'C':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -721,7 +693,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case '0':
+	case '0':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -729,7 +701,7 @@ void lcd_format_display(char letter)
 		}
 		break;
 
-		case 'D':
+	case 'D':
 		if (counter < PASSKEY_LENGTH)
 		{
 			LCD_Write_Char(LCD0, '*');
@@ -741,12 +713,11 @@ void lcd_format_display(char letter)
 
 #endif
 
-
 void MainMassage(void)
 {
 	LCD_Clear(LCD0);
 	LCD_Write_String(LCD0, "Welcome");
-	
+
 	uint8_t i;
 	for (i = 0; i < 16; i++)
 	{
@@ -763,7 +734,6 @@ void MainMassage(void)
 	LCD_Write_String(LCD0, "Enter PassKey.");
 	_delay_ms(1000);
 	LCD_Clear(LCD0);
-	
 }
 
 void load_number_of_triles(void)
@@ -787,31 +757,30 @@ void set_number_of_triles(void)
 	LCD_Write_String(LCD0, "NUM OF TRILES SETED.");
 	_delay_ms(1000);
 	LCD_Clear(LCD0);
-	LCD_Write_Char(LCD0,EEPROM_read(NUMBEROFTRILESADDRESS));
+	LCD_Write_Char(LCD0, EEPROM_read(NUMBEROFTRILESADDRESS));
 	_delay_ms(2000);
 	LCD_Clear(LCD0);
-	#endif
+#endif
 }
 void reset_number_of_triles(void)
 {
-	number_of_triels = '0' ;
+	number_of_triels = '0';
 	EEPROM_write(NUMBEROFTRILESADDRESS, number_of_triels);
 
-	#if DEBUGE == 1
+#if DEBUGE == 1
 	LCD_Clear(LCD0);
 	LCD_Write_String(LCD0, "RESET TRILES NUM.");
 	_delay_ms(1000);
 	LCD_Clear(LCD0);
-	LCD_Write_Char(LCD0,EEPROM_read(NUMBEROFTRILESADDRESS));
+	LCD_Write_Char(LCD0, EEPROM_read(NUMBEROFTRILESADDRESS));
 	_delay_ms(2000);
 	LCD_Clear(LCD0);
-	#endif
+#endif
 }
 void first_entry_validation(void)
 {
 	if (EEPROM_read(FIRST_ENTERY_VALIDATION_ADDRESS) != FIRST_ENTERY_VALIDATION_LETTER)
 	{
-
 
 		char message[20] = "FIRST CODE USAGE.";
 		LCD_Clear(LCD0);
@@ -820,12 +789,12 @@ void first_entry_validation(void)
 		LCD_Clear(LCD0);
 
 		reset_number_of_triles();
-		
+
 		new_passkey_scanning();
 
 		LCD_Clear(LCD0);
 		update_passkey(payload);
-		
+
 #if DEBUGE == 1
 		uint8_t i;
 		for (i = 0; i < PASSKEY_LENGTH; ++i)
@@ -846,14 +815,10 @@ void first_entry_validation(void)
 		LCD_Write_Char(LCD0, EEPROM_read(FIRST_ENTERY_VALIDATION_ADDRESS));
 		_delay_ms(2000);
 		LCD_Clear(LCD0);
-		_delay_ms(1000);		
+		_delay_ms(1000);
 #endif
 	}
 }
-
-
-
-
 
 void update_passkey(char string[PASSKEY_LENGTH])
 {
@@ -874,58 +839,56 @@ void update_passkey(char string[PASSKEY_LENGTH])
 #endif
 }
 
-
-
-void do_punish(void){
-	
-subtract = number_of_triels - '0' ;
-
-if (subtract > 1)
+void do_punish(void)
 {
 
-if (subtract % MAXNUMBEROFTRIELS == 0)
-{
-	divided = subtract / MAXNUMBEROFTRIELS ;
-	int num_of_loops = power(divided); ;
-	int i ;
-	int number_on_second = num_of_loops * MIN_WAIT ;
+	subtract = number_of_triels - '0';
 
-	#if DEBUGE == 1
-	LCD_Write_String(LCD0,"NUM OF LOOPS");
-	itoa(num_of_loops,buffer,10);
-	LCD_Clear(LCD0);
-	LCD_Write_String(LCD0,buffer);
-	_delay_ms(1000);	
-	#endif
-
-	for (i=0;i<num_of_loops;++i)
+	if (subtract > 1)
 	{
-		LCD_Clear(LCD0);
-		LCD_Write_String(LCD0,"WAIT ");	
-		itoa(number_on_second,buffer,10);
-		LCD_Write_String(LCD0,buffer);	
-		_delay_ms(5000) ;
-		number_on_second = number_on_second - MIN_WAIT ;
+
+		if (subtract % MAXNUMBEROFTRIELS == 0)
+		{
+			divided = subtract / MAXNUMBEROFTRIELS;
+			int num_of_loops = power(divided);
+			;
+			int i;
+			int number_on_second = num_of_loops * MIN_WAIT;
+
+#if DEBUGE == 1
+			LCD_Write_String(LCD0, "NUM OF LOOPS");
+			itoa(num_of_loops, buffer, 10);
+			LCD_Clear(LCD0);
+			LCD_Write_String(LCD0, buffer);
+			_delay_ms(1000);
+#endif
+
+			for (i = 0; i < num_of_loops; ++i)
+			{
+				LCD_Clear(LCD0);
+				LCD_Write_String(LCD0, "WAIT ");
+				itoa(number_on_second, buffer, 10);
+				LCD_Write_String(LCD0, buffer);
+				_delay_ms(5000);
+				number_on_second = number_on_second - MIN_WAIT;
+			}
+			LCD_Clear(LCD0);
+			punish = 0;
+		}
 	}
-LCD_Clear(LCD0);
-punish = 0;
 }
 
-}
-
-}
-
-
-void reset_payload(void){
-	
-int i ;
-for (i=0;i<PASSKEY_LENGTH;++i)
+void reset_payload(void)
 {
-	payload[i] = '*' ;
-}
 
-counter = 0 ;
-current = 0 ;
+	int i;
+	for (i = 0; i < PASSKEY_LENGTH; ++i)
+	{
+		payload[i] = '*';
+	}
+
+	counter = 0;
+	current = 0;
 #if DEBUGE == 1
 	LCD_Clear(LCD0);
 	LCD_Write_String(LCD0, "PAYLOAD RESETED");
@@ -934,10 +897,8 @@ current = 0 ;
 #endif
 }
 
+int power(int num)
+{
 
-
-int power(int num){
-
-return	(1<<(num - 1));
-
+	return (1 << (num - 1));
 }

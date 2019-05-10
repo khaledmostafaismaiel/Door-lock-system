@@ -1,10 +1,7 @@
 #ifndef KEYPAD_H_INCLUDED
 #define KEYPAD_H_INCLUDED
 
-
-#define  DEBUGE 0
-
-
+#define DEBUGE 0
 
 #include "GPIO.h"
 #include <avr/io.h>
@@ -13,20 +10,16 @@
 #include "timer.h"
 #include "helper.h"
 
-
-#define  wait_for_3sec_timer1 60
-#define  NUM_OF_ROWS 4
-#define  NUM_OF_COLOMS 4
-#define  NOT_PRESSED_LETTER 'M'
+#define wait_for_3sec_timer1 60
+#define NUM_OF_ROWS 4
+#define NUM_OF_COLOMS 4
+#define NOT_PRESSED_LETTER 'M'
 
 uint8_t col, row;
-uint8_t is_hash ;
-uint8_t hash_checker ;
+uint8_t is_hash;
+uint8_t hash_checker;
 
-extern uint8_t is_long_pressed ;
-
-
-
+extern uint8_t is_long_pressed;
 
 /*
 *Function: get_pressed_key
@@ -38,8 +31,6 @@ extern uint8_t is_long_pressed ;
 */
 uint8_t get_pressed_key(void);
 
-
-
 /*
 *Function: what_key
 *
@@ -48,6 +39,5 @@ uint8_t get_pressed_key(void);
 *return the key which is pressed
 */
 uint8_t what_key(void);
-
 
 #endif // KEYPAD_H_INCLUDED

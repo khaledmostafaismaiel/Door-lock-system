@@ -23,7 +23,6 @@ void start_conversion()
 	ADCSRA |= (1 << ADSC);
 }
 
-
 unsigned short adc_read(void)
 {
 

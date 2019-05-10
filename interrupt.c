@@ -9,7 +9,6 @@
 
 #include "interrupt.h"
 
-
 void set_int0_init(void)
 {
 	GICR |= (1 << INT0);
@@ -19,12 +18,9 @@ void set_int0_init(void)
 	sei();
 }
 
-
 void reset_int0_init(void)
 {
 	GICR &= ~(1 << INT0);
-
-
 }
 
 ISR(INT0_vect)
@@ -43,4 +39,3 @@ ISR(INT0_vect)
 		status = 1;
 	}
 }
-

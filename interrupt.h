@@ -13,16 +13,11 @@
 #include "timer.h"
 #include "helper.h"
 
-
-
 uint8_t doorOpencounter;
 uint8_t doorclosecounter;
 
 extern int status;
 extern int pulse;
-
-
-
 
 /*
 *Function: set_int0_init
@@ -33,9 +28,6 @@ extern int pulse;
 */
 void set_int0_init(void);
 
-
-
-
 /*
 *Function: reset_int0_init
 *
@@ -44,6 +36,5 @@ void set_int0_init(void);
 *return void
 */
 void reset_int0_init(void);
-
 
 #endif /* INTERRUPT_H_ */

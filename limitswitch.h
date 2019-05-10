@@ -13,16 +13,14 @@
 #include "motor.h"
 #include "helper.h"
 
-#define  CLOSE_LIMIT_SWITCH_PIN 5
-#define  OPEN_LIMIT_SWITCH_PIN 4
-#define  NUM_OF_LIMIT_SWITCH_SAMPLING 5
+#define CLOSE_LIMIT_SWITCH_PIN 5
+#define OPEN_LIMIT_SWITCH_PIN 4
+#define NUM_OF_LIMIT_SWITCH_SAMPLING 5
 
 uint8_t limit_switch_flag;
 
 extern uint8_t doorOpencounter;
 extern uint8_t doorclosecounter;
-
-
 
 /*
 *Function: close_limit_switch_checker
@@ -32,8 +30,6 @@ extern uint8_t doorclosecounter;
 *return void
 */
 void close_limit_switch_checker(void);
-
-
 
 /*
 *Function: open_limit_switch_checker

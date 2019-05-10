@@ -17,7 +17,7 @@ void timer0_init(void)
 	// 200 msec ultrasensor
 
 	TCCR0 |= (1 << WGM01) | (1 << CS00) | (1 << CS02);
-	OCR0 = 79; 	// 0.010112 sec = 10.1 msec
+	OCR0 = 79; // 0.010112 sec = 10.1 msec
 	TIMSK |= (1 << OCIE0);
 	sei();
 	timer1_wait_for = 0;
@@ -46,71 +46,59 @@ ISR(TIMER0_COMP_vect)
 	}
 }
 
-
-
-
 void set_pwm_timer2_init(void)
 {
 
 	//this timer used for making PWM
 
 	TCCR2 = (1 << WGM20) | (1 << WGM21) | (1 << COM21) | (1 << CS20);
-	DDRD |=  (1 << FIRST_MOTOR_PIN);
+	DDRD |= (1 << FIRST_MOTOR_PIN);
 }
-
 
 void reset_pwm_timer2_init(void)
 {
 
-	TCCR2 = 0 ;
+	TCCR2 = 0;
 }
 
+void set_ultra_timer1(void)
+{
 
-void set_ultra_timer1(void){
-	
 	TCCR1B = (1 << CS00);
-	
 }
 
+void reset_ultra_timer1(void)
+{
 
-void reset_ultra_timer1(void){
-	
-		TCCR1B = 0;
-		TIMSK &= ~(1<<OCIE1A);
-	
+	TCCR1B = 0;
+	TIMSK &= ~(1 << OCIE1A);
 }
 
+void reset_counter_timer1A_init(void)
+{
 
-void reset_counter_timer1A_init(void){
-	
 	//50 msec
-	
-	TCCR1B = 0 ;
+
+	TCCR1B = 0;
 	sei();
-	TIMSK &= ~(1<<OCIE1A);
-	timer1Aextra_time = 0 ;
+	TIMSK &= ~(1 << OCIE1A);
+	timer1Aextra_time = 0;
 }
 
+void set_counter_timer1A_init(void)
+{
 
-void set_counter_timer1A_init(void){
-		
-		//50 msec 
-		
-		TCCR1B = (1<<WGM12) | (1<<CS10) | (1<<CS12) ;
-		sei();
-		OCR1A =	391 ; //Set number of clocks   .05 sec
-		TIMSK |= (1<<OCIE1A);
-		timer1Aextra_time = 0 ;		
+	//50 msec
+
+	TCCR1B = (1 << WGM12) | (1 << CS10) | (1 << CS12);
+	sei();
+	OCR1A = 391; //Set number of clocks   .05 sec
+	TIMSK |= (1 << OCIE1A);
+	timer1Aextra_time = 0;
 }
 
+ISR(TIMER1_COMPA_vect)
+{
 
-
-ISR(TIMER1_COMPA_vect){
-
-	++timer1Aextra_time;	
+	++timer1Aextra_time;
 }
-
-
-
-
-

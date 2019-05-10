@@ -11,18 +11,12 @@
 #include <avr/io.h>
 #include "helper.h"
 
-
 uint8_t firstKey;
 uint8_t secondKey;
 uint8_t thirdKey;
 uint8_t fourthKey;
 uint8_t fifthKey;
 uint8_t sixthKey;
-
-
-
-
-
 
 /*
 *Function: EEPROM_write
@@ -37,8 +31,6 @@ uint8_t sixthKey;
 *return void
 */
 void EEPROM_write(unsigned int uiAddress, uint8_t ucData);
-
-
 
 /*
 *Function: EEPROM_read

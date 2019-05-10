@@ -8,7 +8,6 @@
 #ifndef APP_H_
 #define APP_H_
 
-
 #include <avr/io.h>
 #define F_CPU 8000000UL
 #include <util/delay.h>
@@ -28,10 +27,8 @@
 #include "pwm.h"
 #include "ultrasonic.h"
 
-
-
 #define PASSKEY_LENGTH 6
-#define  wait_for_10sec_timer0 100
+#define wait_for_10sec_timer0 100
 #define MINWAIT 5000
 #define MAXNUMBEROFTRIELS 3
 #define NUMBEROFTRILESADDRESS 0xA
@@ -42,10 +39,9 @@
 #define FIRST_ENTERY_VALIDATION_LETTER 'K'
 #define MIN_WAIT 5
 
-
-int subtract ;
-int punish ;
-int divided;	
+int subtract;
+int punish;
+int divided;
 
 unsigned int passkey_address_array[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
 uint8_t correct_passkey[6];
@@ -53,22 +49,20 @@ uint8_t ultra_flag;
 uint8_t potentiometer_flag;
 uint8_t keypad_flag;
 uint8_t timer1_wait_for;
-uint8_t mission_done ;
+uint8_t mission_done;
 uint8_t payload[6];
 uint8_t current;
 uint8_t coreect_pass_key;
 uint8_t enter;
 uint8_t new_pressed;
-uint8_t is_long_pressed ;
+uint8_t is_long_pressed;
 uint8_t counter;
-uint8_t set_new_passkey ;
+uint8_t set_new_passkey;
 uint8_t number_of_triels;
 uint8_t buffer[20];
 
 extern float wait_in_half_second;
-extern uint8_t is_hash ;
-
-
+extern uint8_t is_hash;
 
 /*
 *Function: MainMassage
@@ -78,8 +72,6 @@ extern uint8_t is_hash ;
 */
 void MainMassage(void);
 
-
-
 /*
 *Function: run
 *used to run all program
@@ -87,8 +79,6 @@ void MainMassage(void);
 *return void
 */
 void run(void);
-
-
 
 /*
 *Function: passkey_loading
@@ -98,9 +88,6 @@ void run(void);
 */
 void passkey_loading(void);
 
-
-
-
 /*
 *Function: lcd_format_display
 *used to display all key as '*' to the user
@@ -108,8 +95,6 @@ void passkey_loading(void);
 *return void
 */
 void lcd_format_display(char);
-
-
 
 /*
 *Function: first_entry_validation
@@ -119,9 +104,6 @@ void lcd_format_display(char);
 */
 void first_entry_validation(void);
 
-
-
-
 /*
 *Function: load_number_of_triles
 *used to load number of triles from the eeprom
@@ -129,8 +111,6 @@ void first_entry_validation(void);
 *return void
 */
 void load_number_of_triles(void);
-
-
 
 /*
 *Function: set_number_of_triles
@@ -140,8 +120,6 @@ void load_number_of_triles(void);
 */
 void set_number_of_triles(void);
 
-
-
 /*
 *Function: reset_number_of_triles
 *used to reset the number of triles
@@ -149,9 +127,6 @@ void set_number_of_triles(void);
 *return void
 */
 void reset_number_of_triles(void);
-
-
-
 
 /*
 *Function: update_passkey
@@ -162,8 +137,6 @@ void reset_number_of_triles(void);
 */
 void update_passkey(char *);
 
-
-
 /*
 *Function: do_punish
 *used to punish the user if it enter the passkey 3,6,9,and so on times with invalid passkey
@@ -171,8 +144,6 @@ void update_passkey(char *);
 *return void
 */
 void do_punish(void);
-
-
 
 /*
 *Function: reset_payload
@@ -182,8 +153,6 @@ void do_punish(void);
 */
 void reset_payload(void);
 
-
-
 /*
 *Function: old_passkey_scanning
 *used to scan the old passkey from the user
@@ -191,9 +160,6 @@ void reset_payload(void);
 *return void
 */
 void old_passkey_scanning(void);
-
-
-
 
 /*
 *Function: new_passkey_scanning
@@ -203,9 +169,6 @@ void old_passkey_scanning(void);
 */
 void new_passkey_scanning(void);
 
-
-
-
 /*
 *Function: passkey_scanning
 *used to scan the passkey 
@@ -213,9 +176,6 @@ void new_passkey_scanning(void);
 *return void
 */
 void passkey_scanning(void);
-
-
-
 
 /*
 *Function: pass_comparing
@@ -227,8 +187,6 @@ void passkey_scanning(void);
 */
 int pass_comparing(char *);
 
-
-
 /*
 *Function: power
 *used to caculate the 2 power x
@@ -237,7 +195,5 @@ int pass_comparing(char *);
 *return the value of 2 power x
 */
 int power(int);
-
-
 
 #endif /* APP_H_ */

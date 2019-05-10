@@ -13,8 +13,6 @@
 
 uint8_t duty_cycle;
 
-
-
 /*
 *Function: pwm_duty
 *used to set the duty cycle
@@ -24,6 +22,5 @@ uint8_t duty_cycle;
 *return void
 */
 void pwm_duty(unsigned int duty);
-
 
 #endif /* PWM_H_ */

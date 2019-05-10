@@ -34,7 +34,6 @@ extern uint8_t limit_switch_flag;
 extern uint8_t duty_cycle;
 extern uint8_t timer1_wait_for;
 
-
 /*
 *Function: timer0_init
 *
@@ -43,9 +42,6 @@ extern uint8_t timer1_wait_for;
 *return void
 */
 void timer0_init(void);
-
-
-
 
 /*
 *Function: set_pwm_timer2_init
@@ -56,8 +52,6 @@ void timer0_init(void);
 */
 void set_pwm_timer2_init(void);
 
-
-
 /*
 *Function: reset_pwm_timer2_init
 *
@@ -66,10 +60,6 @@ void set_pwm_timer2_init(void);
 *return void
 */
 void reset_pwm_timer2_init(void);
-
-
-
-
 
 /*
 *Function: reset_ultra_timer1
@@ -80,9 +70,6 @@ void reset_pwm_timer2_init(void);
 */
 void reset_ultra_timer1(void);
 
-
-
-
 /*
 *Function: set_ultra_timer1
 *
@@ -92,9 +79,6 @@ void reset_ultra_timer1(void);
 */
 void set_ultra_timer1(void);
 
-
-
-
 /*
 *Function: set_counter_timer1A_init
 *
@@ -103,8 +87,6 @@ void set_ultra_timer1(void);
 *return void
 */
 void set_counter_timer1A_init(void);
-
-
 
 /*
 *Function: reset_counter_timer1A_init
@@ -116,4 +98,3 @@ void set_counter_timer1A_init(void);
 void reset_counter_timer1A_init(void);
 
 #endif /* TIMER_H_ */
-
