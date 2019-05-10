@@ -17,7 +17,7 @@ void run(void)
 
 	passkey_loading();
 
-	close_door();
+	close_door(); //to make sure the door is close
 
 #if DEBUGE == 1
 	LCD_Clear(LCD0);
@@ -184,9 +184,9 @@ timer0_init();
 while(timer1_wait_for < wait_for_10sec_timer0){
 
 _delay_ms(10);
-	if (keypad_flag == 1)
+	if (keypad_flag == 1)  //i can add scanning for the keypad because if the user want to change the passkey in this time
 	{
-		keypad_flag = 0;
+		keypad_flag = 0; 
 	}
 }
 
